@@ -1,4 +1,4 @@
-# Infrstructure
+# Infrastructure
 
 It is a driven layer (driven by core/domain).
 
