@@ -6,7 +6,7 @@ Showcases simple TODO list app. The app is runable, but not really functional (d
 
 Includes:
 - Core services and repos (todo and todo list)
-- Logger, app config
+- Logger, app config, container, Gin server
 - Mail Service
 - GQL server (using gqlgen)
 - Mongo client
