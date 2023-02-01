@@ -1,6 +1,6 @@
 package adapters
 
-import "hexa-example-go/internal/domain/entities"
+import "hexa-example-go/internal/app/domain/entities"
 
 type TodoListToSave struct {
 	Name string

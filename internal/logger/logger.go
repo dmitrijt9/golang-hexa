@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"hexa-example-go/internal/config"
 	"log"
 	"net"
 	"os"
@@ -10,16 +11,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-type LoggerConfig struct {
-	Level           string `env:"LOG_LEVEL" envDefault:"info"`
-	ConsoleEnabled  bool   `env:"LOG_CONSOLE_IS_ENABLED" envDefault:"true"`
-	FilebeatEnabled bool   `env:"LOG_FILEBEAT_IS_ENABLED" envDefault:"false"`
-	FilebeatUrl     string `env:"LOG_FILEBEAT_URL"`
-	FilebeatIndex   string `env:"LOG_FILEBEAT_INDEX"`
-	FileBeatAppName string `env:"LOG_FILEBEAT_APPNAME"`
-}
-
-func InitLogger(loggerConfig LoggerConfig) *zap.Logger {
+func InitLogger(loggerConfig config.LoggerConfig) *zap.Logger {
 	defaultLevel := zapcore.InfoLevel
 	if loggerConfig.Level != "" {
 		parsedLevel, err := zapcore.ParseLevel(loggerConfig.Level)
@@ -49,7 +41,7 @@ func initConsoleCore(level zapcore.Level) zapcore.Core {
 	return zapcore.NewCore(zapcore.NewConsoleEncoder(config), os.Stdout, level)
 }
 
-func initFilebeatCore(level zapcore.Level, loggerConfig LoggerConfig) zapcore.Core {
+func initFilebeatCore(level zapcore.Level, loggerConfig config.LoggerConfig) zapcore.Core {
 	c, err := net.Dial("tcp", loggerConfig.FilebeatUrl)
 
 	if err != nil {

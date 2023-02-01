@@ -2,8 +2,8 @@ package repositories
 
 import (
 	"context"
-	"hexa-example-go/internal/domain/adapters"
-	"hexa-example-go/internal/domain/entities"
+	"hexa-example-go/internal/app/domain/adapters"
+	"hexa-example-go/internal/app/domain/entities"
 	"log"
 	"math/rand"
 	"strconv"

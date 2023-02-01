@@ -1,7 +1,7 @@
 package graph
 
 import (
-	"hexa-example-go/internal/domain/services"
+	"hexa-example-go/internal/app/domain/services"
 )
 
 // This file will not be regenerated automatically.

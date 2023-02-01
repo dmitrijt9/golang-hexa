@@ -2,8 +2,8 @@ package services
 
 import (
 	"errors"
-	"hexa-example-go/internal/domain/adapters"
-	"hexa-example-go/internal/domain/entities"
+	"hexa-example-go/internal/app/domain/adapters"
+	"hexa-example-go/internal/app/domain/entities"
 
 	"go.uber.org/zap"
 )

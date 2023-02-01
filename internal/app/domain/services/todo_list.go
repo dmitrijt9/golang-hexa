@@ -2,19 +2,23 @@ package services
 
 import (
 	"errors"
-	"hexa-example-go/internal/domain/adapters"
-	"hexa-example-go/internal/domain/entities"
+	"hexa-example-go/internal/app/domain/adapters"
+	"hexa-example-go/internal/app/domain/entities"
 
 	"go.uber.org/zap"
 )
 
-type TodoListService struct {
+type TodoListService interface {
+	CreateTodoList(dto createTodoListDTO) (*entities.TodoList, error)
+}
+
+type todoListService struct {
 	logger zap.Logger
 	repo   adapters.TodoListRepository
 }
 
-func NewTodoListService(logger zap.Logger, repo adapters.TodoListRepository) *TodoListService {
-	return &TodoListService{
+func NewTodoListService(logger zap.Logger, repo adapters.TodoListRepository) TodoListService {
+	return &todoListService{
 		logger: logger,
 		repo:   repo,
 	}
@@ -22,11 +26,11 @@ func NewTodoListService(logger zap.Logger, repo adapters.TodoListRepository) *To
 
 // This could be also in a separate directory (eg. /services/dto/)
 // I like it here, because it is right above the actual usage.
-type CreateTodoListDTO struct {
+type createTodoListDTO struct {
 	name string
 }
 
-func (s *TodoListService) CreateTodoList(dto CreateTodoListDTO) (*entities.TodoList, error) {
+func (s *todoListService) CreateTodoList(dto createTodoListDTO) (*entities.TodoList, error) {
 	newName := dto.name
 
 	if newName == "" {
