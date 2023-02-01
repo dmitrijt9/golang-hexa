@@ -20,6 +20,8 @@ func NewTodoListService(logger zap.Logger, repo adapters.TodoListRepository) *To
 	}
 }
 
+// This could be also in a separate directory (eg. /services/dto/)
+// I like it here, because it is right above the actual usage.
 type CreateTodoListDTO struct {
 	name string
 }
