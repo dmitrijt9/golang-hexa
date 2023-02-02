@@ -1,6 +1,7 @@
 package container
 
 import (
+	"hexa-example-go/internal/app/domain/adapters"
 	"hexa-example-go/internal/app/domain/services"
 	"hexa-example-go/internal/app/infrastructure/repositories"
 	"hexa-example-go/internal/config"
@@ -36,5 +37,5 @@ type Container struct {
 	Config config.HexaExampleConfig
 	Logger zap.Logger
 
-	TodoListService services.TodoListService
+	TodoListService adapters.TodoListService
 }

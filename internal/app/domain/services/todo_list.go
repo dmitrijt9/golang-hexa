@@ -8,30 +8,20 @@ import (
 	"go.uber.org/zap"
 )
 
-type TodoListService interface {
-	CreateTodoList(dto createTodoListDTO) (*entities.TodoList, error)
-}
-
 type todoListService struct {
 	logger zap.Logger
 	repo   adapters.TodoListRepository
 }
 
-func NewTodoListService(logger zap.Logger, repo adapters.TodoListRepository) TodoListService {
+func NewTodoListService(logger zap.Logger, repo adapters.TodoListRepository) adapters.TodoListService {
 	return &todoListService{
 		logger: logger,
 		repo:   repo,
 	}
 }
 
-// This could be also in a separate directory (eg. /services/dto/)
-// I like it here, because it is right above the actual usage.
-type createTodoListDTO struct {
-	name string
-}
-
-func (s *todoListService) CreateTodoList(dto createTodoListDTO) (*entities.TodoList, error) {
-	newName := dto.name
+func (s *todoListService) CreateTodoList(dto adapters.CreateTodoListDTO) (*entities.TodoList, error) {
+	newName := dto.Name
 
 	if newName == "" {
 		return nil, errors.New("name of todo list cannot be empty")

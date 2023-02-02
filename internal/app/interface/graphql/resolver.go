@@ -1,7 +1,7 @@
 package graph
 
 import (
-	"hexa-example-go/internal/app/domain/services"
+	"hexa-example-go/internal/app/domain/adapters"
 )
 
 // This file will not be regenerated automatically.
@@ -9,5 +9,5 @@ import (
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	TodoListService services.TodoListService
+	TodoListService adapters.TodoListService
 }
