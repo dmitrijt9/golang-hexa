@@ -244,7 +244,7 @@ func (ec *executionContext) _Query_todoLists(ctx context.Context, field graphql.
 	}
 	res := resTmp.([]*TodoList)
 	fc.Result = res
-	return ec.marshalNTodoList2ᚕᚖhexaᚑexampleᚑgoᚋinterfaceᚋgraphqlᚐTodoList(ctx, field.Selections, res)
+	return ec.marshalNTodoList2ᚕᚖhexaᚑexampleᚑgoᚋinternalᚋappᚋinterfaceᚋgraphqlᚐTodoList(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_todoLists(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2718,7 +2718,7 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNTodoList2ᚕᚖhexaᚑexampleᚑgoᚋinterfaceᚋgraphqlᚐTodoList(ctx context.Context, sel ast.SelectionSet, v []*TodoList) graphql.Marshaler {
+func (ec *executionContext) marshalNTodoList2ᚕᚖhexaᚑexampleᚑgoᚋinternalᚋappᚋinterfaceᚋgraphqlᚐTodoList(ctx context.Context, sel ast.SelectionSet, v []*TodoList) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2742,7 +2742,7 @@ func (ec *executionContext) marshalNTodoList2ᚕᚖhexaᚑexampleᚑgoᚋinterfa
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOTodoList2ᚖhexaᚑexampleᚑgoᚋinterfaceᚋgraphqlᚐTodoList(ctx, sel, v[i])
+			ret[i] = ec.marshalOTodoList2ᚖhexaᚑexampleᚑgoᚋinternalᚋappᚋinterfaceᚋgraphqlᚐTodoList(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -3051,7 +3051,7 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return res
 }
 
-func (ec *executionContext) marshalOTodoList2ᚖhexaᚑexampleᚑgoᚋinterfaceᚋgraphqlᚐTodoList(ctx context.Context, sel ast.SelectionSet, v *TodoList) graphql.Marshaler {
+func (ec *executionContext) marshalOTodoList2ᚖhexaᚑexampleᚑgoᚋinternalᚋappᚋinterfaceᚋgraphqlᚐTodoList(ctx context.Context, sel ast.SelectionSet, v *TodoList) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

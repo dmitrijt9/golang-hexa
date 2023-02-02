@@ -1,10 +1,10 @@
 # Where are all the schema files located? globs are supported eg  src/**/*.graphqls
 schema:
-  - interface/graphql/*.gql
+  - internal/app/interface/graphql/*.gql
 
 # Where should the generated server code go?
 exec:
-  filename: interface/graphql/server_gen.go
+  filename: internal/app/interface/graphql/server_gen.go
   package: graph
 
 # Uncomment to enable federation
@@ -14,13 +14,13 @@ exec:
 
 # Where should any generated models go?
 model:
-  filename: interface/graphql/model_gen.go
+  filename: internal/app/interface/graphql/model_gen.go
   package: graph
 
 # Where should the resolver implementations go?
 resolver:
   layout: follow-schema
-  dir: interface/graphql
+  dir: internal/app/interface/graphql
   package: graph
 
 # Optional: turn on use ` + "`" + `gqlgen:"fieldName"` + "`" + ` tags in your models
