@@ -1,4 +1,4 @@
-package adapters
+package out_ports
 
 import "hexa-example-go/internal/app/domain/entities"
 

@@ -2,8 +2,8 @@ package repositories
 
 import (
 	"context"
-	"hexa-example-go/internal/app/domain/adapters"
 	"hexa-example-go/internal/app/domain/entities"
+	"hexa-example-go/internal/app/domain/out_ports"
 	"log"
 	"math/rand"
 	"strconv"
@@ -19,14 +19,7 @@ type TodoListRepo struct {
 	mongoCli mongo.Client
 }
 
-func NewTodoListRepo(logger zap.Logger, mongoCli mongo.Client) *TodoListRepo {
-	return &TodoListRepo{
-		logger:   logger,
-		mongoCli: mongoCli,
-	}
-}
-
-func (r *TodoListRepo) Save(toSave adapters.TodoListToSave) (*entities.TodoList, error) {
+func (r *TodoListRepo) Save(toSave out_ports.TodoListToSave) (*entities.TodoList, error) {
 	dbName := "test"
 	collName := "test"
 	coll := r.mongoCli.Database(dbName).Collection(collName)
@@ -49,11 +42,17 @@ func (r *TodoListRepo) Save(toSave adapters.TodoListToSave) (*entities.TodoList,
 	}, nil
 }
 
-// TODO: implement
 func (r *TodoListRepo) GetByName(name string) (*entities.TodoList, error) {
 	panic("not implemented yet")
 }
 
 func (r *TodoListRepo) List() ([]*entities.TodoList, error) {
 	panic("not implemented yet")
+}
+
+func NewTodoListRepo(logger zap.Logger, mongoCli mongo.Client) out_ports.TodoListRepository {
+	return &TodoListRepo{
+		logger:   logger,
+		mongoCli: mongoCli,
+	}
 }

@@ -2,25 +2,26 @@ package services
 
 import (
 	"errors"
-	"hexa-example-go/internal/app/domain/adapters"
 	"hexa-example-go/internal/app/domain/entities"
+	"hexa-example-go/internal/app/domain/in_ports"
+	"hexa-example-go/internal/app/domain/out_ports"
 
 	"go.uber.org/zap"
 )
 
 type todoListService struct {
 	logger zap.Logger
-	repo   adapters.TodoListRepository
+	repo   out_ports.TodoListRepository
 }
 
-func NewTodoListService(logger zap.Logger, repo adapters.TodoListRepository) adapters.TodoListService {
+func NewTodoListService(logger zap.Logger, repo out_ports.TodoListRepository) in_ports.TodoListService {
 	return &todoListService{
 		logger: logger,
 		repo:   repo,
 	}
 }
 
-func (s *todoListService) CreateTodoList(dto adapters.CreateTodoListDTO) (*entities.TodoList, error) {
+func (s *todoListService) CreateTodoList(dto in_ports.CreateTodoListDTO) (*entities.TodoList, error) {
 	newName := dto.Name
 
 	if newName == "" {
@@ -36,7 +37,7 @@ func (s *todoListService) CreateTodoList(dto adapters.CreateTodoListDTO) (*entit
 		return nil, errors.New("todo list with such name already exist")
 	}
 
-	todolistToSave := adapters.TodoListToSave{
+	todolistToSave := out_ports.TodoListToSave{
 		Name: newName,
 	}
 	newTodoList, err := s.repo.Save(todolistToSave)

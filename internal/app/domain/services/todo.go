@@ -2,19 +2,20 @@ package services
 
 import (
 	"errors"
-	"hexa-example-go/internal/app/domain/adapters"
 	"hexa-example-go/internal/app/domain/entities"
+	"hexa-example-go/internal/app/domain/in_ports"
+	"hexa-example-go/internal/app/domain/out_ports"
 
 	"go.uber.org/zap"
 )
 
 type TodoService struct {
 	logger   zap.Logger
-	repo     adapters.TodoRepository
-	repoList adapters.TodoListRepository
+	repo     out_ports.TodoRepository
+	repoList out_ports.TodoListRepository
 }
 
-func NewTodoService(logger zap.Logger, repo adapters.TodoRepository, repoList adapters.TodoListRepository) *TodoService {
+func NewTodoService(logger zap.Logger, repo out_ports.TodoRepository, repoList out_ports.TodoListRepository) *TodoService {
 	return &TodoService{
 		logger:   logger,
 		repo:     repo,
@@ -22,18 +23,11 @@ func NewTodoService(logger zap.Logger, repo adapters.TodoRepository, repoList ad
 	}
 }
 
-type createTodoDTO struct {
-	title       string
-	description string
-	status      entities.TodoStatus
-	listName    string
-}
-
-func (s *TodoService) CreateTodo(dto createTodoDTO) (*entities.Todo, error) {
-	newTitle := dto.title
-	newDescription := dto.description
-	status := dto.status
-	listName := dto.listName
+func (s *TodoService) CreateTodo(dto in_ports.CreateTodoDTO) (*entities.Todo, error) {
+	newTitle := dto.Title
+	newDescription := dto.Description
+	status := dto.Status
+	listName := dto.ListName
 
 	if newTitle == "" {
 		return nil, errors.New("title of the todo cannot be empty")
@@ -52,7 +46,7 @@ func (s *TodoService) CreateTodo(dto createTodoDTO) (*entities.Todo, error) {
 		return nil, err
 	}
 
-	todoToSave := adapters.TodoToSave{
+	todoToSave := out_ports.TodoToSave{
 		Title:       newTitle,
 		Description: newDescription,
 		Status:      status,
