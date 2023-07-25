@@ -1,7 +1,7 @@
 package container
 
 import (
-	"hexa-example-go/internal/app/domain/out_ports"
+	"hexa-example-go/internal/app/domain/in_ports"
 	"hexa-example-go/internal/app/domain/services"
 	"hexa-example-go/internal/app/infrastructure/repositories"
 	"hexa-example-go/internal/config"
@@ -37,5 +37,5 @@ type Container struct {
 	Config config.HexaExampleConfig
 	Logger zap.Logger
 
-	TodoListService out_ports.TodoListService
+	TodoListService in_ports.TodoListService
 }
