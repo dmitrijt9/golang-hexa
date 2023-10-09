@@ -22,12 +22,8 @@ func Load() (config HexaExampleConfig, err error) {
 }
 
 type LoggerConfig struct {
-	Level           string `env:"LOG_LEVEL" envDefault:"info"`
-	ConsoleEnabled  bool   `env:"LOG_CONSOLE_IS_ENABLED" envDefault:"true"`
-	FilebeatEnabled bool   `env:"LOG_FILEBEAT_IS_ENABLED" envDefault:"false"`
-	FilebeatUrl     string `env:"LOG_FILEBEAT_URL"`
-	FilebeatIndex   string `env:"LOG_FILEBEAT_INDEX"`
-	FileBeatAppName string `env:"LOG_FILEBEAT_APPNAME"`
+	Level  string `env:"APP_LOG_LEVEL"`
+	Format string `env:"APP_LOG_FORMAT"`
 }
 
 type ServerConfig struct {

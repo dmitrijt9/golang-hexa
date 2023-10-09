@@ -2,9 +2,8 @@ package services
 
 import (
 	"hexa-example-go/internal/app/domain/out_ports"
+	"hexa-example-go/internal/logger"
 	"net/smtp"
-
-	"go.uber.org/zap"
 )
 
 type MailService struct {
@@ -12,7 +11,7 @@ type MailService struct {
 	port string
 }
 
-func NewMailService(logger zap.Logger, host string, port string) out_ports.MailService {
+func NewMailService(logger logger.Logger, host string, port string) out_ports.MailService {
 	return &MailService{
 		host: host,
 		port: port,

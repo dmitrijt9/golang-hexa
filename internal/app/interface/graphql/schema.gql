@@ -1,5 +1,6 @@
 type Query {
   todoLists: [TodoList]!
+  todoListCreate(name: String!): TodoList
 }
 
 type TodoList {

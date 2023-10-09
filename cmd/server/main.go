@@ -2,12 +2,11 @@ package main
 
 import (
 	"hexa-example-go/internal/container"
+	"hexa-example-go/internal/logger"
 	"hexa-example-go/internal/server"
 	"os"
 	"os/signal"
 	"syscall"
-
-	"go.uber.org/zap"
 )
 
 func main() {
@@ -21,7 +20,7 @@ func main() {
 	r.Run(cont.Config.Server.Host + ":" + cont.Config.Server.Port)
 }
 
-func handleKillSignal(interrupt chan os.Signal, logger zap.Logger) {
+func handleKillSignal(interrupt chan os.Signal, logger logger.Logger) {
 	for {
 		killSignal := <-interrupt
 		// TODO: How do we want to handle signals? what should we close, wait for it to end?

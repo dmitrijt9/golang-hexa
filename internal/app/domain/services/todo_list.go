@@ -2,22 +2,24 @@ package services
 
 import (
 	"errors"
+	"fmt"
 	"hexa-example-go/internal/app/domain/entities"
 	"hexa-example-go/internal/app/domain/in_ports"
 	"hexa-example-go/internal/app/domain/out_ports"
-
-	"go.uber.org/zap"
+	"hexa-example-go/internal/logger"
 )
 
 type todoListService struct {
-	logger zap.Logger
-	repo   out_ports.TodoListRepository
+	logger      logger.Logger
+	repo        out_ports.TodoListRepository
+	mailService out_ports.MailService
 }
 
-func NewTodoListService(logger zap.Logger, repo out_ports.TodoListRepository) in_ports.TodoListService {
+func NewTodoListService(logger logger.Logger, repo out_ports.TodoListRepository) in_ports.TodoListService {
 	return &todoListService{
 		logger: logger,
 		repo:   repo,
+		// TODO: pass mail service dependency
 	}
 }
 
@@ -44,6 +46,9 @@ func (s *todoListService) CreateTodoList(dto in_ports.CreateTodoListDTO) (*entit
 	if err != nil {
 		return nil, err
 	}
+
+	mailMessage := fmt.Sprintf("Your new todo list '%s' was successfully created! :)", newName)
+	s.mailService.SendMessage("me@me.com", "system@hexa-example-go.com", "New Todo List created!", mailMessage)
 
 	return newTodoList, err
 }

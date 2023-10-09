@@ -4,6 +4,7 @@ import (
 	"context"
 	"hexa-example-go/internal/app/domain/entities"
 	"hexa-example-go/internal/app/domain/out_ports"
+	"hexa-example-go/internal/logger"
 	"log"
 	"math/rand"
 	"strconv"
@@ -11,11 +12,10 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.uber.org/zap"
 )
 
 type TodoListRepo struct {
-	logger   zap.Logger
+	logger   logger.Logger
 	mongoCli mongo.Client
 }
 
@@ -50,7 +50,7 @@ func (r *TodoListRepo) List() ([]*entities.TodoList, error) {
 	panic("not implemented yet")
 }
 
-func NewTodoListRepo(logger zap.Logger, mongoCli mongo.Client) out_ports.TodoListRepository {
+func NewTodoListRepo(logger logger.Logger, mongoCli mongo.Client) out_ports.TodoListRepository {
 	return &TodoListRepo{
 		logger:   logger,
 		mongoCli: mongoCli,

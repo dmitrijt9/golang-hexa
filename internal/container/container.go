@@ -3,12 +3,10 @@ package container
 import (
 	"hexa-example-go/internal/app/domain/in_ports"
 	"hexa-example-go/internal/app/domain/services"
+	"hexa-example-go/internal/app/infrastructure/clients/mongo"
 	"hexa-example-go/internal/app/infrastructure/repositories"
 	"hexa-example-go/internal/config"
 	"hexa-example-go/internal/logger"
-	"hexa-example-go/internal/mongo"
-
-	"go.uber.org/zap"
 )
 
 func New() Container {
@@ -17,17 +15,20 @@ func New() Container {
 		panic(err)
 	}
 
-	logger := logger.InitLogger(conf.Logger)
+	logger := logger.New(logger.Config{
+		Level:  logger.Level(conf.Logger.Level),
+		Format: logger.Format(conf.Logger.Format),
+	})
 
 	mongoClient := mongo.Connect(conf.Mongo)
 	defer mongo.Disconnect(&mongoClient)
 
-	todoListRepo := repositories.NewTodoListRepo(*logger, mongoClient)
-	todoListService := services.NewTodoListService(*logger, todoListRepo)
+	todoListRepo := repositories.NewTodoListRepo(logger, mongoClient)
+	todoListService := services.NewTodoListService(logger, todoListRepo)
 
 	return Container{
 		Config:          conf,
-		Logger:          *logger,
+		Logger:          logger,
 		TodoListService: todoListService,
 	}
 
@@ -35,7 +36,7 @@ func New() Container {
 
 type Container struct {
 	Config config.HexaExampleConfig
-	Logger zap.Logger
+	Logger logger.Logger
 
 	TodoListService in_ports.TodoListService
 }

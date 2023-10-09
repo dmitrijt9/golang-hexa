@@ -1,63 +1,62 @@
 package logger
 
 import (
-	"hexa-example-go/internal/config"
-	"log"
-	"net"
-	"os"
-
-	"go.elastic.co/ecszap"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 )
 
-func InitLogger(loggerConfig config.LoggerConfig) *zap.Logger {
-	defaultLevel := zapcore.InfoLevel
-	if loggerConfig.Level != "" {
-		parsedLevel, err := zapcore.ParseLevel(loggerConfig.Level)
-		if err == nil {
-			defaultLevel = parsedLevel
-		}
-	}
+/*
+Level is an enum of common levels as we know them.
+  - debug 0
+  - info 1
+  - warn 2
+  - error 3
 
-	var cores []zapcore.Core
-	if loggerConfig.ConsoleEnabled {
-		consoleCore := initConsoleCore(defaultLevel)
-		cores = append(cores, consoleCore)
-	}
+Selected level and all "above it" (ascending order) is used to log messages.
+*/
+type Level string
 
-	if loggerConfig.FilebeatEnabled {
-		filebeatCore := initFilebeatCore(defaultLevel, loggerConfig)
-		cores = append(cores, filebeatCore)
-	}
+const (
+	LevelDebug Level = "debug"
+	LevelInfo  Level = "info"
+	LevelWarn  Level = "warn"
+	LevelError Level = "error"
+)
 
-	core := zapcore.NewTee(cores...)
-	return zap.New(core, zap.AddCaller(), zap.AddStacktrace(zapcore.ErrorLevel))
+type Logger interface {
+	Debug(msg string, logContext ...Context) Logger
+	Info(msg string, logContext ...Context) Logger
+	Warn(msg string, logContext ...Context) Logger
+	Error(msg string, logContext ...Context) Logger
 }
 
-func initConsoleCore(level zapcore.Level) zapcore.Core {
-	config := zap.NewProductionEncoderConfig()
-	config.EncodeTime = zapcore.ISO8601TimeEncoder
-	return zapcore.NewCore(zapcore.NewConsoleEncoder(config), os.Stdout, level)
+type logger struct {
+	Level     Level
+	Format    Format
+	zapLogger *zap.Logger
 }
 
-func initFilebeatCore(level zapcore.Level, loggerConfig config.LoggerConfig) zapcore.Core {
-	c, err := net.Dial("tcp", loggerConfig.FilebeatUrl)
+type Context = map[string]interface{}
 
-	if err != nil {
-		log.Panic(err)
-	}
+func (l *logger) Debug(msg string, logContext ...Context) Logger {
+	checkFields(l, logContext...)
+	l.zapLogger.Debug(msg, getContextField(logContext...)...)
+	return l
+}
 
-	logSync := &TcpLogSyncer{}
-	logSync.SetTcpConnection(c)
+func (l *logger) Info(msg string, logContext ...Context) Logger {
+	checkFields(l, logContext...)
+	l.zapLogger.Info(msg, getContextField(logContext...)...)
+	return l
+}
 
-	parsingMetadata := map[string]interface{}{
-		"index":    loggerConfig.FilebeatIndex,
-		"appname":  loggerConfig.FileBeatAppName,
-		"keepDays": 7,
-	}
-	customFields := []zapcore.Field{zap.String("app", "aspira-waitress"), zap.String("environment", "development"), zap.Any("parsing_metadata", parsingMetadata)}
+func (l *logger) Warn(msg string, logContext ...Context) Logger {
+	checkFields(l, logContext...)
+	l.zapLogger.Warn(msg, getContextField(logContext...)...)
+	return l
+}
 
-	encoderConfig := ecszap.NewDefaultEncoderConfig()
-	return ecszap.NewCore(encoderConfig, logSync, level).With(customFields)
+func (l *logger) Error(msg string, logContext ...Context) Logger {
+	checkFields(l, logContext...)
+	l.zapLogger.Error(msg, getContextField(logContext...)...)
+	return l
 }

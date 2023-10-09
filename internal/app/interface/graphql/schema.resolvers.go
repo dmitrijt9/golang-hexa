@@ -7,11 +7,27 @@ package graph
 import (
 	"context"
 	"fmt"
+	"hexa-example-go/internal/app/domain/in_ports"
 )
 
 // TodoLists is the resolver for the todoLists field.
 func (r *queryResolver) TodoLists(ctx context.Context) ([]*TodoList, error) {
 	panic(fmt.Errorf("not implemented: TodoLists - todoLists"))
+}
+
+// TodoListCreate is the resolver for the todoListCreate field.
+func (r *queryResolver) TodoListCreate(ctx context.Context, name string) (*TodoList, error) {
+	newTodoList, err := r.TodoListService.CreateTodoList(in_ports.CreateTodoListDTO{Name: name})
+
+	// TODO: format error
+	if err != nil {
+		return nil, err
+	}
+
+	return &TodoList{
+		ID:   newTodoList.Id,
+		Name: newTodoList.Name,
+	}, nil
 }
 
 // Query returns QueryResolver implementation.

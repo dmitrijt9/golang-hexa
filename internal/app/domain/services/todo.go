@@ -5,17 +5,16 @@ import (
 	"hexa-example-go/internal/app/domain/entities"
 	"hexa-example-go/internal/app/domain/in_ports"
 	"hexa-example-go/internal/app/domain/out_ports"
-
-	"go.uber.org/zap"
+	"hexa-example-go/internal/logger"
 )
 
 type TodoService struct {
-	logger   zap.Logger
+	logger   logger.Logger
 	repo     out_ports.TodoRepository
 	repoList out_ports.TodoListRepository
 }
 
-func NewTodoService(logger zap.Logger, repo out_ports.TodoRepository, repoList out_ports.TodoListRepository) *TodoService {
+func NewTodoService(logger logger.Logger, repo out_ports.TodoRepository, repoList out_ports.TodoListRepository) *TodoService {
 	return &TodoService{
 		logger:   logger,
 		repo:     repo,

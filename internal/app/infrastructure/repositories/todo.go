@@ -2,13 +2,13 @@ package repositories
 
 import (
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.uber.org/zap"
 	"hexa-example-go/internal/app/domain/entities"
 	"hexa-example-go/internal/app/domain/out_ports"
+	"hexa-example-go/internal/logger"
 )
 
 type TodoRepo struct {
-	logger   zap.Logger
+	logger   logger.Logger
 	mongoCli mongo.Client
 }
 
@@ -22,7 +22,7 @@ func (t TodoRepo) List() ([]*entities.Todo, error) {
 	panic("implement me")
 }
 
-func NewTodoRepo(logger zap.Logger, mongoCli mongo.Client) out_ports.TodoRepository {
+func NewTodoRepo(logger logger.Logger, mongoCli mongo.Client) out_ports.TodoRepository {
 	return &TodoRepo{
 		logger:   logger,
 		mongoCli: mongoCli,
